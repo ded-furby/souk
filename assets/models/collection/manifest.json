@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ear-cuff",
+    "file": "ear-cuff.glb",
+    "name": "Climbing Jasmine Ear Cuff",
+    "line": "A single wire of hand-worked gold climbs the ear in a line of jasmine blossoms, each centred on a seed pearl.",
+    "size": [
+      0.054,
+      0.0382,
+      0.0269
+    ]
+  },
+  {
+    "id": "hathphool",
+    "file": "hathphool.glb",
+    "name": "Panja Hand Harness",
+    "line": "A wrist band, a floral medallion and a trio of finger rings are joined by fine bead-chain, after antique panja harnesses.",
+    "size": [
+      0.1076,
+      0.2131,
+      0.0312
+    ]
+  },
+  {
+    "id": "dragonfly",
+    "file": "dragonfly.glb",
+    "name": "Dragonfly Filigree Brooch",
+    "line": "Openwork wings of gold wire frame a segmented emerald-and-gold body, pinned with a single ruby fleck at the tail.",
+    "size": [
+      0.0959,
+      0.0677,
+      0.0224
+    ]
+  },
+  {
+    "id": "pendant",
+    "file": "pendant.glb",
+    "name": "Garden Pearl Pendant",
+    "line": "A central pearl sits within a ring of chased petals, hung from a short festoon of bead-chain.",
+    "size": [
+      0.1008,
+      0.1027,
+      0.0331
+    ]
+  },
+  {
+    "id": "bangle",
+    "file": "bangle.glb",
+    "name": "Leaf Repouss\u00e9 Kada",
+    "line": "A rounded gold kada, its face worked with a procession of repouss\u00e9 leaves and studded with small pearls.",
+    "size": [
+      0.0746,
+      0.0749,
+      0.0193
+    ]
+  },
+  {
+    "id": "jhumka",
+    "file": "jhumka.glb",
+    "name": "Blossom Jhumka",
+    "line": "A pair of bell-shaped drops, each crowned with a small blossom and fringed with pearls on fine gold stems.",
+    "size": [
+      0.0735,
+      0.0621,
+      0.031
+    ]
+  }
+]

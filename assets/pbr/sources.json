@@ -1,0 +1,135 @@
+{
+  "stone": {
+    "color-2k": {
+      "size": 3780151,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_sandstone_blocks_02/white_sandstone_blocks_02_diff_2k.jpg",
+      "md5": "141a8964984195586d2d6fac4ee34fef"
+    },
+    "color-4k": {
+      "size": 15017717,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/white_sandstone_blocks_02/white_sandstone_blocks_02_diff_4k.jpg",
+      "md5": "6a7f3109b5d729fd570d8bdbc9f0e023"
+    },
+    "normal-2k": {
+      "size": 3117994,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_sandstone_blocks_02/white_sandstone_blocks_02_nor_gl_2k.jpg",
+      "md5": "aa73e395015c04dfe452405b8be5d337"
+    },
+    "normal-4k": {
+      "size": 10973933,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/white_sandstone_blocks_02/white_sandstone_blocks_02_nor_gl_4k.jpg",
+      "md5": "75fe79eb27ca429f93252f084e08e450"
+    },
+    "rough-2k": {
+      "size": 2545799,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/white_sandstone_blocks_02/white_sandstone_blocks_02_rough_2k.jpg",
+      "md5": "8ab4fe8a2e489ea63f835a0d6bc5ecdf"
+    },
+    "rough-4k": {
+      "size": 10138057,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/white_sandstone_blocks_02/white_sandstone_blocks_02_rough_4k.jpg",
+      "md5": "1bc860352b224ac8edc84b66392bba78"
+    }
+  },
+  "floor": {
+    "color-2k": {
+      "size": 3021140,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/monastery_stone_floor/monastery_stone_floor_diff_2k.jpg",
+      "md5": "35420aa52b8257920b1d7566fb80ab4d"
+    },
+    "color-4k": {
+      "size": 11478741,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/monastery_stone_floor/monastery_stone_floor_diff_4k.jpg",
+      "md5": "5ec21e4ec6c5996338ef87ddd9a17f1b"
+    },
+    "normal-2k": {
+      "size": 4248820,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/monastery_stone_floor/monastery_stone_floor_nor_gl_2k.jpg",
+      "md5": "68fe9fe33ed384c0a0f45b57f642e0a9"
+    },
+    "normal-4k": {
+      "size": 15776724,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/monastery_stone_floor/monastery_stone_floor_nor_gl_4k.jpg",
+      "md5": "bf63d84e3940e332de4a99572ab1c48d"
+    },
+    "rough-2k": {
+      "size": 1744682,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/monastery_stone_floor/monastery_stone_floor_rough_2k.jpg",
+      "md5": "ef1df6aacd1ca6ca404ac0b927662a65"
+    },
+    "rough-4k": {
+      "size": 6335632,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/monastery_stone_floor/monastery_stone_floor_rough_4k.jpg",
+      "md5": "17cf7b661d41b2a4199c87e55b70af8a"
+    }
+  },
+  "sand": {
+    "color-2k": {
+      "size": 1984816,
+      "md5": "e5b22b6d5c2bbe3b6ec0b9dfa137bea1",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_diff_2k.jpg"
+    },
+    "color-4k": {
+      "size": 7391665,
+      "md5": "5fd525c68fffba0467dd16853854605d",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sand_01/sand_01_diff_4k.jpg"
+    },
+    "normal-2k": {
+      "size": 2503853,
+      "md5": "b8298e9007b3983f9e10d35cd87a4b1f",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_nor_gl_2k.jpg"
+    },
+    "normal-4k": {
+      "size": 7400883,
+      "md5": "ae8566db067253a720d9dc0e9bf0bb63",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sand_01/sand_01_nor_gl_4k.jpg"
+    },
+    "rough-2k": {
+      "size": 757435,
+      "md5": "ae89a58489a0cf49e899fb6abd5f65c9",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/sand_01/sand_01_rough_2k.jpg"
+    },
+    "rough-4k": {
+      "size": 2979878,
+      "md5": "e5caa498a07f886e1ebc9a0d0426d73d",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/sand_01/sand_01_rough_4k.jpg"
+    }
+  },
+  "wood": {
+    "color-2k": {
+      "size": 2884395,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dark_wooden_planks/dark_wooden_planks_diff_2k.jpg",
+      "md5": "e6ae2fe585184c16343c56b833eddbf8"
+    },
+    "color-4k": {
+      "size": 11518252,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dark_wooden_planks/dark_wooden_planks_diff_4k.jpg",
+      "md5": "70d434b2df3799476a2c5c716d673c73"
+    },
+    "normal-2k": {
+      "size": 2930852,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dark_wooden_planks/dark_wooden_planks_nor_gl_2k.jpg",
+      "md5": "c7b2e77045b0983cd7c9c408c0361a59"
+    },
+    "normal-4k": {
+      "size": 12180374,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dark_wooden_planks/dark_wooden_planks_nor_gl_4k.jpg",
+      "md5": "59fc4e21ab56d37552aa1c7a787f7cdd"
+    },
+    "rough-2k": {
+      "size": 2737535,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dark_wooden_planks/dark_wooden_planks_rough_2k.jpg",
+      "md5": "9999def4fb6e250016bb21e2d4625a55"
+    },
+    "rough-4k": {
+      "size": 10826212,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/dark_wooden_planks/dark_wooden_planks_rough_4k.jpg",
+      "md5": "688101610f2554b47c8ee3dc93854296"
+    }
+  },
+  "hdr": {
+    "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/venice_sunset_2k.hdr",
+    "size": 5723224,
+    "md5": "0108ed73b9b1096ff64b47d257c1849c"
+  }
+}

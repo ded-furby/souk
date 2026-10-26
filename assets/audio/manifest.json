@@ -1,0 +1,320 @@
+{
+  "amb_desert": {
+    "duration": 46.0,
+    "file": "amb_desert.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "amb_entrance": {
+    "duration": 42.0,
+    "file": "amb_entrance.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "amb_flight": {
+    "duration": 40.0,
+    "file": "amb_flight.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "amb_gallery": {
+    "duration": 40.0,
+    "file": "amb_gallery.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "amb_souk": {
+    "duration": 48.0,
+    "file": "amb_souk.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "amb_workshop": {
+    "duration": 44.0,
+    "file": "amb_workshop.mp3",
+    "loop": true,
+    "type": "ambience"
+  },
+  "carpet_land": {
+    "duration": 2.0,
+    "file": "carpet_land.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "carpet_rise": {
+    "duration": 3.0,
+    "file": "carpet_rise.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "charms_tinkle": {
+    "duration": 1.5,
+    "file": "charms_tinkle.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "cloth_flutter": {
+    "duration": 1.5,
+    "file": "cloth_flutter.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "cool_hiss": {
+    "duration": 1.5,
+    "file": "cool_hiss.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "dig_1": {
+    "duration": 0.56,
+    "file": "dig_1.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "dig_2": {
+    "duration": 0.47,
+    "file": "dig_2.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "dig_3": {
+    "duration": 0.6,
+    "file": "dig_3.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "discovery": {
+    "duration": 3.2,
+    "file": "discovery.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "door_open": {
+    "duration": 2.5,
+    "file": "door_open.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "engrave": {
+    "duration": 1.2,
+    "file": "engrave.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "finale_bell": {
+    "duration": 4.0,
+    "file": "finale_bell.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "genie_appear": {
+    "duration": 4.6,
+    "file": "genie_appear.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "genie_vanish": {
+    "duration": 2.0,
+    "file": "genie_vanish.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "growth_creak": {
+    "duration": 3.0,
+    "file": "growth_creak.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "hammer_1": {
+    "duration": 0.4,
+    "file": "hammer_1.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "hammer_2": {
+    "duration": 0.4,
+    "file": "hammer_2.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "hammer_3": {
+    "duration": 0.4,
+    "file": "hammer_3.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "lantern_on": {
+    "duration": 0.8,
+    "file": "lantern_on.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "monkey_chitter_1": {
+    "duration": 0.69,
+    "file": "monkey_chitter_1.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "monkey_chitter_2": {
+    "duration": 0.69,
+    "file": "monkey_chitter_2.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "monkey_chitter_3": {
+    "duration": 0.76,
+    "file": "monkey_chitter_3.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "monkey_chitter_4": {
+    "duration": 0.73,
+    "file": "monkey_chitter_4.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "monkey_gasp": {
+    "duration": 0.5,
+    "file": "monkey_gasp.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "mus_desert": {
+    "duration": 90.0,
+    "file": "mus_desert.mp3",
+    "loop": true,
+    "type": "music"
+  },
+  "mus_finale": {
+    "duration": 85.0,
+    "file": "mus_finale.mp3",
+    "loop": false,
+    "type": "music"
+  },
+  "mus_gallery": {
+    "duration": 65.0,
+    "file": "mus_gallery.mp3",
+    "loop": true,
+    "type": "music"
+  },
+  "mus_souk": {
+    "duration": 78.14,
+    "file": "mus_souk.mp3",
+    "loop": true,
+    "type": "music"
+  },
+  "mus_welcome": {
+    "duration": 72.0,
+    "file": "mus_welcome.mp3",
+    "loop": true,
+    "type": "music"
+  },
+  "mus_workshop": {
+    "duration": 65.0,
+    "file": "mus_workshop.mp3",
+    "loop": true,
+    "type": "music"
+  },
+  "pearl_set": {
+    "duration": 0.6,
+    "file": "pearl_set.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "pickup": {
+    "duration": 0.3,
+    "file": "pickup.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "place_click": {
+    "duration": 0.4,
+    "file": "place_click.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "pour_gold": {
+    "duration": 2.5,
+    "file": "pour_gold.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "sparkle": {
+    "duration": 0.6,
+    "file": "sparkle.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_sand_1": {
+    "duration": 0.25,
+    "file": "step_sand_1.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_sand_2": {
+    "duration": 0.23,
+    "file": "step_sand_2.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_sand_3": {
+    "duration": 0.31,
+    "file": "step_sand_3.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_sand_4": {
+    "duration": 0.26,
+    "file": "step_sand_4.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_stone_1": {
+    "duration": 0.23,
+    "file": "step_stone_1.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_stone_2": {
+    "duration": 0.2,
+    "file": "step_stone_2.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_stone_3": {
+    "duration": 0.2,
+    "file": "step_stone_3.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "step_stone_4": {
+    "duration": 0.2,
+    "file": "step_stone_4.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "trail_loop": {
+    "duration": 8.0,
+    "file": "trail_loop.mp3",
+    "loop": true,
+    "type": "sfx"
+  },
+  "transform_swell": {
+    "duration": 11.0,
+    "file": "transform_swell.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "ui_confirm": {
+    "duration": 0.8,
+    "file": "ui_confirm.mp3",
+    "loop": false,
+    "type": "sfx"
+  },
+  "ui_hover": {
+    "duration": 0.06,
+    "file": "ui_hover.mp3",
+    "loop": false,
+    "type": "sfx"
+  }
+}

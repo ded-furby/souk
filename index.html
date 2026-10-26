@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#16120d" />
+  <meta name="description" content="The Souk of Stolen Wishes — an interactive VR journey through the Gold Souk, the craft of jewellery and the golden desert. Kavya Potluri." />
+  <title>The Souk of Stolen Wishes</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23201912'/%3E%3Ctext x='50' y='71' text-anchor='middle' font-size='62' fill='%23d9b46a'%3E✧%3C/text%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="./assets/index-4wwczRNx.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/three-CJrR38H-.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-CBiK_R-z.css">
+</head>
+<body>
+  <canvas id="world" tabindex="0" aria-label="Three-dimensional world"></canvas>
+
+  <div id="veil"></div>
+  <div id="letterbox" aria-hidden="true"><i></i><i></i></div>
+
+  <div id="loading">
+    <div class="sigil">✧</div>
+    <p>Gathering forgotten things</p>
+    <div class="bar"><i id="load-bar"></i></div>
+    <small id="load-status">Preparing the souk…</small>
+    <button id="retry" class="outline" hidden>Try again</button>
+  </div>
+
+  <!-- Title -->
+  <section id="title" hidden>
+    <header class="t-top"><span class="brand">KAVYA POTLURI</span><span class="tiny">A JOURNEY THROUGH CRAFT</span></header>
+    <div class="hero">
+      <div class="eyebrow"><span></span>AN INTERACTIVE VR FABLE</div>
+      <h1>The Souk of<br /><em>Stolen Wishes</em></h1>
+      <p class="intro">Follow a curious guide through an ancient Gold Souk.<br />Learn the craft. Find what was lost.</p>
+      <div class="hero-actions">
+        <button class="primary" id="btn-begin">Begin the journey <span>→</span></button>
+        <button class="text" id="btn-continue" hidden>Continue <span id="continue-label"></span> →</button>
+      </div>
+      <div class="hero-links">
+        <button class="text small" id="btn-chapters">Chapters</button>
+        <button class="text small" id="btn-settings">Settings</button>
+        <button class="text small vr-btn" id="btn-vr" disabled>Checking VR…</button>
+      </div>
+    </div>
+    <footer class="t-bottom">
+      <span>GOLD · MEMORY · CRAFTSMANSHIP</span>
+      <span class="keys">Mouse look · WASD walk · Click interact · Space skip · Esc pause</span>
+    </footer>
+  </section>
+
+  <!-- In-game HUD -->
+  <section id="hud" hidden>
+    <div id="objective" aria-live="polite"><small id="obj-chapter"></small><span id="obj-text"></span></div>
+    <div id="crosshair"><i></i>
+      <svg id="hold-ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" /></svg>
+    </div>
+    <div id="prompt"><kbd id="prompt-key">Click</kbd><span id="prompt-text"></span></div>
+    <div id="subtitle" aria-live="polite"><b id="sub-speaker"></b><span id="sub-text"></span></div>
+    <div id="skip-hint" hidden><kbd>Space</kbd> hold to skip<i id="skip-fill"></i></div>
+    <div id="inspect-card" hidden><small>KAVYA POTLURI</small><h3 id="inspect-name"></h3><p id="inspect-line"></p><span class="muted">Drag to turn · Click to return</span></div>
+    <div id="click-to-play" hidden><span>Click to look around</span></div>
+    <div id="toast" role="status"></div>
+    <div id="touch" aria-hidden="true">
+      <div id="stick"><i></i></div>
+      <button id="touch-act">✧</button>
+    </div>
+  </section>
+
+  <!-- Pause -->
+  <dialog id="pause">
+    <div class="eyebrow">PAUSED</div>
+    <h2>The souk will wait.</h2>
+    <div class="menu">
+      <button class="primary" id="btn-resume">Resume</button>
+      <button class="outline" id="btn-pause-chapters">Chapters</button>
+      <button class="outline" id="btn-pause-settings">Settings</button>
+      <button class="outline" id="btn-pause-vr" hidden>Enter VR</button>
+      <button class="text" id="btn-title">Back to title</button>
+    </div>
+  </dialog>
+
+  <dialog id="chapters">
+    <button class="close" data-close aria-label="Close">×</button>
+    <div class="eyebrow">CHAPTERS</div>
+    <h2>Begin anywhere.</h2>
+    <ol id="chapter-list"></ol>
+  </dialog>
+
+  <dialog id="settings">
+    <button class="close" data-close aria-label="Close">×</button>
+    <div class="eyebrow">COMFORT &amp; SOUND</div>
+    <h2>Your journey, your pace.</h2>
+    <div class="settings-grid">
+      <label class="setting"><span>Music<small>Original score</small></span><input type="range" id="set-music" min="0" max="1" step="0.05" /></label>
+      <label class="setting"><span>Sound effects<small>Ambience and craft</small></span><input type="range" id="set-sfx" min="0" max="1" step="0.05" /></label>
+      <label class="setting"><span>Genie's voice<small>Uses your device's speech voice</small></span><input type="checkbox" id="set-voice" /></label>
+      <label class="setting"><span>Subtitles<small>Always recommended</small></span><input type="checkbox" id="set-subs" /></label>
+      <label class="setting"><span>Mouse sensitivity</span><input type="range" id="set-sens" min="0.3" max="2.5" step="0.1" /></label>
+      <label class="setting"><span>Reduced motion<small>Shorter, gentler animations</small></span><input type="checkbox" id="set-reduced" /></label>
+      <label class="setting"><span>VR smooth walking<small>Left stick glides; off = teleport only</small></span><input type="checkbox" id="set-smooth" /></label>
+      <label class="setting"><span>VR comfort vignette<small>Narrows view while moving</small></span><input type="checkbox" id="set-vignette" /></label>
+      <label class="setting"><span>VR seated play<small>Raises your eye height when sitting down</small></span><input type="checkbox" id="set-seated" /></label>
+      <label class="setting"><span>Rendering detail</span><select id="set-quality"><option value="low">Light (standalone VR)</option><option value="medium">Balanced</option><option value="high">Cinematic</option></select></label>
+    </div>
+    <p class="muted small">VR: point and pull the trigger to interact · right stick to turn, push it forward to teleport · left stick to walk · hold A / X to skip a story moment · B / Y opens the menu.</p>
+  </dialog>
+
+  <dialog id="ending">
+    <div class="eyebrow">THE WISH WAS NEVER LOST</div>
+    <h2>Some things are<br /><em>worth remembering.</em></h2>
+    <p>You followed the thread from a maker's hands to a forgotten pearl — and brought its story back into the light.</p>
+    <div class="signature">KAVYA POTLURI <span>CRAFTSMANSHIP · MEMORY · HERITAGE</span></div>
+    <div class="menu row">
+      <button class="primary" id="btn-stay">Stay a while</button>
+      <button class="text" id="btn-again">Begin again →</button>
+    </div>
+  </dialog>
+
+</body>
+</html>
