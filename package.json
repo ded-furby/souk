@@ -1,0 +1,13 @@
+{
+  "name": "souk-of-stolen-wishes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/app.js --bundle --minify --format=esm --target=es2022 --legal-comments=none --outfile=assets/app.js",
+    "dev": "esbuild src/app.js --bundle --format=esm --target=es2022 --sourcemap --outfile=assets/app.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0",
+    "three": "0.186.0"
+  }
+}

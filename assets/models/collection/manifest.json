@@ -1,68 +1,14 @@
 [
-  {
-    "id": "ear-cuff",
-    "file": "ear-cuff.glb",
-    "name": "Climbing Jasmine Ear Cuff",
-    "line": "A single wire of hand-worked gold climbs the ear in a line of jasmine blossoms, each centred on a seed pearl.",
-    "size": [
-      0.054,
-      0.0382,
-      0.0269
-    ]
-  },
-  {
-    "id": "hathphool",
-    "file": "hathphool.glb",
-    "name": "Panja Hand Harness",
-    "line": "A wrist band, a floral medallion and a trio of finger rings are joined by fine bead-chain, after antique panja harnesses.",
-    "size": [
-      0.1076,
-      0.2131,
-      0.0312
-    ]
-  },
-  {
-    "id": "dragonfly",
-    "file": "dragonfly.glb",
-    "name": "Dragonfly Filigree Brooch",
-    "line": "Openwork wings of gold wire frame a segmented emerald-and-gold body, pinned with a single ruby fleck at the tail.",
-    "size": [
-      0.0959,
-      0.0677,
-      0.0224
-    ]
-  },
-  {
-    "id": "pendant",
-    "file": "pendant.glb",
-    "name": "Garden Pearl Pendant",
-    "line": "A central pearl sits within a ring of chased petals, hung from a short festoon of bead-chain.",
-    "size": [
-      0.1008,
-      0.1027,
-      0.0331
-    ]
-  },
-  {
-    "id": "bangle",
-    "file": "bangle.glb",
-    "name": "Leaf Repouss\u00e9 Kada",
-    "line": "A rounded gold kada, its face worked with a procession of repouss\u00e9 leaves and studded with small pearls.",
-    "size": [
-      0.0746,
-      0.0749,
-      0.0193
-    ]
-  },
-  {
-    "id": "jhumka",
-    "file": "jhumka.glb",
-    "name": "Blossom Jhumka",
-    "line": "A pair of bell-shaped drops, each crowned with a small blossom and fringed with pearls on fine gold stems.",
-    "size": [
-      0.0735,
-      0.0621,
-      0.031
-    ]
-  }
+  { "id": "filigree-mask", "file": "filigree-mask.glb", "name": "Filigree Mask",
+    "line": "Gold wire fountains from the bridge of the nose into a lace of buds, leaves and granulation, with crimped roses at the jaw." },
+  { "id": "floral-crown", "file": "floral-crown.glb", "name": "Floral Crown",
+    "line": "A halo of gold roses, beaded sprays and veined leaves rising from a single slim band." },
+  { "id": "filigree-sunglasses", "file": "filigree-sunglasses.glb", "name": "Filigree Sunglasses",
+    "line": "Round dark lenses framed in gold, wreathed in leaves and buds, with a granulated medallion at the bridge." },
+  { "id": "bun-cage", "file": "bun-cage.glb", "name": "Filigree Bun Cage", "face": [0.55, 0.54, 0.64],
+    "line": "An openwork gold dome of leaves, florets and bead sprays, crowned by a winged creature with ladder-veined wings." },
+  { "id": "finger-armour", "file": "finger-armour.glb", "name": "Filigree Finger Armour",
+    "line": "An openwork shield for the index finger and fine vine rings for the others, ending in bead-tipped tendrils." },
+  { "id": "ear-cuff-study", "kind": "study", "file": "ear-cuff-study.jpg", "name": "Floral Ear Cuff · Study",
+    "line": "The maker's drawing of the piece that belongs on the empty pedestal." }
 ]

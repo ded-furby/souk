@@ -1,0 +1,9 @@
+{
+ "name": "souk-jewellery-tools",
+ "private": true,
+ "type": "module",
+ "dependencies": {
+  "playwright-core": "^1.48.2",
+  "three": "^0.186.0"
+ }
+}
