@@ -1,0 +1,4 @@
+node_modules/
+out/
+# inputs for polish.py: the original GLBs (git show a5fed1c:assets/models/monkey-anim.glb, monkey.glb)
+orig/

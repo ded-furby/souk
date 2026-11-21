@@ -16,10 +16,11 @@ FADE=$(python3 -c "print(round($END-1.5,2))")
 OUT="$HOME/Desktop/$TITLE.mp4"
 ffmpeg -v error -y -hwaccel videotoolbox -i "$W/rec.webm" -t "$END" -vf "fps=30,fade=t=out:st=$FADE:d=1.5" \
   -af "afade=t=out:st=$FADE:d=1.5" -c:v h264_videotoolbox -b:v 8M -profile:v high -c:a aac -b:a 192k -movflags +faststart "$OUT" 2>&1 | grep -v "Opus packet" || true
-# small copy for phone viewing (< 30 MB): 540p, two-pass
-ffmpeg -v error -y -i "$OUT" -vf scale=960:540 -c:v libx264 -preset medium -b:v 380k -pass 1 -passlogfile "$W/x264" -an -f null /dev/null
-ffmpeg -v error -y -i "$OUT" -vf scale=960:540 -c:v libx264 -preset medium -b:v 380k -pass 2 -passlogfile "$W/x264" -c:a aac -b:a 96k -movflags +faststart "$W/$TITLE (phone).mp4"
-ffprobe -v error -show_entries format=duration,size -of compact "$OUT" "$W/$TITLE (phone).mp4"
+# small copy for phone viewing and email (Gmail caps attachments at 25 MB): 540p, two-pass, bitrate sized to ~23.5 MB
+VB=$(python3 -c "print(int(23.5 * 8000 / $END - 64 - 6))")
+ffmpeg -v error -y -i "$OUT" -vf scale=960:540 -c:v libx264 -preset medium -b:v ${VB}k -pass 1 -passlogfile "$W/x264" -an -f null /dev/null
+ffmpeg -v error -y -i "$OUT" -vf scale=960:540 -c:v libx264 -preset medium -b:v ${VB}k -pass 2 -passlogfile "$W/x264" -c:a aac -b:a 64k -movflags +faststart "$W/$TITLE (phone).mp4"
+for f in "$OUT" "$W/$TITLE (phone).mp4"; do ffprobe -v error -show_entries format=duration,size -of compact "$f"; done
 ffmpeg -i "$OUT" -map 0:a -af volumedetect -f null - 2>&1 | grep -E "mean_volume|max_volume"
 ffmpeg -v error -i "$W/rec.webm" -vf "fps=10,scale=160:90,signalstats,metadata=print:key=lavfi.signalstats.YAVG:file=$W/yavg.txt" -an -f null - 2>/dev/null || true
 python3 - "$W/yavg.txt" <<'EOF'

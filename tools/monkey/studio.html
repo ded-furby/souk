@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>html,body{margin:0;background:#000}</style>
+<script type="importmap">{ "imports": { "three": "/three/build/three.module.js", "three/addons/": "/three/examples/jsm/" } }</script>
+</head>
+<body>
+<script type="module">
+// Monkey look-dev studio: loads a monkey GLB the way the game does (GLTFLoader -> upgradeMonkey hook -> SkeletonUtils.clone
+// -> material clone, envMapIntensity 0.6), poses it on a clip at time t and renders it with game-like lighting
+// (ACES, sRGB, warm sun + hemisphere + environment).
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { clone as skClone } from 'three/addons/utils/SkeletonUtils.js';
+
+let renderer, scene, cam, sun, model, mixer, clips, bones = {}, size = 0, groundMesh;
+
+function grab(w, h) {
+  const gl = renderer.getContext(), px = new Uint8Array(w * h * 4);
+  gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  const ctx = c.getContext('2d'), img = ctx.createImageData(w, h);
+  for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
+  ctx.putImageData(img, 0, 0);
+  return c.toDataURL('image/png');
+}
+
+window.__load = async ({ glb, hook, bg, quality }) => {
+  renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(bg || '#3a2e24');
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.5;
+  sun = new THREE.DirectionalLight('#ffe2b5', 2.2);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -1.2, right: 1.2, top: 1.2, bottom: -1.2, near: 0.5, far: 12 });
+  sun.shadow.bias = -4e-4; sun.shadow.normalBias = 0.01; sun.shadow.radius = 2.5;
+  scene.add(sun, sun.target);
+  scene.add(new THREE.HemisphereLight('#f3dcb8', '#6b5236', 0.5));
+  groundMesh = new THREE.Mesh(new THREE.CircleGeometry(3, 48).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#8a7358', roughness: 0.95 }));
+  groundMesh.receiveShadow = true;
+  scene.add(groundMesh);
+
+  const gltf = await new GLTFLoader().loadAsync(glb);
+  let hookResult = null;
+  if (hook) {
+    const mod = await import(`/src/monkey-look.js?v=${Date.now()}`);
+    const t0 = performance.now();
+    hookResult = mod.upgradeMonkey(gltf, { M: {}, renderer, quality: quality || 'high' });
+    window.__hookMs = performance.now() - t0;
+  }
+  const animated = gltf.animations.length > 2;
+  // --- same as the game's Monkey constructor ---
+  model = skClone(gltf.scene);
+  model.traverse((e) => {
+    if (e.isMesh) {
+      e.castShadow = true; e.receiveShadow = true; e.frustumCulled = false;
+      if (e.material) { e.material = e.material.clone(); e.material.envMapIntensity = 0.6; }
+    }
+  });
+  if (!animated) { model.rotation.y = -Math.PI / 2; model.scale.setScalar(0.54); }
+  const root = new THREE.Group();
+  root.add(model);
+  scene.add(root);
+  mixer = new THREE.AnimationMixer(model);
+  clips = Object.fromEntries(gltf.animations.map((c) => [c.name, c]));
+  model.traverse((o) => { if (o.isBone) bones[o.name] = o; });
+  let tris = 0, verts = 0; const meshes = [];
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const g = o.geometry, t = (g.index ? g.index.count : g.attributes.position.count) / 3;
+    tris += t; verts += g.attributes.position.count;
+    meshes.push({ name: o.name, tris: t, verts: g.attributes.position.count, skinned: !!o.isSkinnedMesh, material: o.material.name, type: o.material.type, attrs: Object.keys(g.attributes) });
+  });
+  return { animated, clips: Object.fromEntries(gltf.animations.map((c) => [c.name, +c.duration.toFixed(3)])), tris, verts, meshes, bones: Object.keys(bones), hookMs: window.__hookMs ?? null, hookResult: hookResult ? Object.keys(hookResult) : null };
+};
+
+let currentAction = null;
+function pose(clip, t) {
+  if (!clip || !clips[clip]) { mixer.stopAllAction(); currentAction = null; model.updateMatrixWorld(true); return; }
+  mixer.stopAllAction();
+  const a = mixer.clipAction(clips[clip]);
+  a.reset(); a.play();
+  mixer.setTime(Math.min(t, clips[clip].duration - 1e-4));
+  model.updateMatrixWorld(true);
+}
+
+const v = new THREE.Vector3();
+function anchor(target) {
+  if (Array.isArray(target)) return v.fromArray(target).clone();
+  const b = bones[target] || model.getObjectByName(target);
+  if (b) return b.getWorldPosition(new THREE.Vector3());
+  return new THREE.Vector3(0, 0.3, 0);
+}
+
+// shot: { clip, t, target: boneName|[x,y,z], offset:[x,y,z], dir:[x,y,z], dist, fov, w, h, sunDir, yaw (model yaw),
+//         aim:[x,y,z] world point the head looks at (same maths as the game's Monkey.aimBone), mode: debug look }
+// stick-figure overlay of the rig: mode 'only' hides the meshes, 'over' draws it through a ghosted mesh
+let skelGroup = null;
+const COL = { L: '#4aa3ff', R: '#ff5a4a', tail: '#ffd24a', mid: '#f4f4f4' };
+function skel(mode) {
+  if (skelGroup) { scene.remove(skelGroup); skelGroup = null; }
+  model.traverse((o) => { if (o.isMesh && !o.userData.blockout) { o.visible = mode !== 'only' && mode !== 'blockout'; o.material.transparent = mode === 'over'; o.material.opacity = mode === 'over' ? 0.35 : 1; o.material.depthWrite = mode !== 'over'; } });
+  if (!mode || mode === 'blockout') return;
+  skelGroup = new THREE.Group();
+  const a = new THREE.Vector3(), b = new THREE.Vector3();
+  for (const bone of Object.values(bones)) {
+    bone.getWorldPosition(a);
+    const col = /L$/.test(bone.name) ? COL.L : /R$/.test(bone.name) ? COL.R : /tail/.test(bone.name) ? COL.tail : COL.mid;
+    const mat = new THREE.MeshBasicMaterial({ color: col, depthTest: false });
+    const j = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), mat); j.position.copy(a); j.renderOrder = 10; skelGroup.add(j);
+    // bone "tail": children, or a stub along local +Y for leaf bones
+    const ends = bone.children.filter((c) => c.isBone).map((c) => c.getWorldPosition(new THREE.Vector3()));
+    if (!ends.length) ends.push(new THREE.Vector3(0, s_leaf(bone.name), 0).applyMatrix4(bone.matrixWorld));
+    for (const e of ends) {
+      const len = a.distanceTo(e); if (len < 1e-5) continue;
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, len, 6), mat);
+      m.position.copy(a).add(e).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.copy(e).sub(a).normalize()); m.renderOrder = 10; skelGroup.add(m);
+    }
+  }
+  scene.add(skelGroup);
+}
+const s_leaf = (n) => (/head/.test(n) ? 0.12 : /hand|foot/.test(n) ? 0.05 : 0.04);
+
+// the game's head look-at (src/app.js Monkey.aimBone), weight n
+const UP = new THREE.Vector3(0, 1, 0);
+function aimBone(e, t, n, yaw) {
+  e.updateWorldMatrix(true, false);
+  const r = t.clone().sub(e.getWorldPosition(new THREE.Vector3())).applyAxisAngle(UP, -yaw);
+  const i = THREE.MathUtils.clamp(Math.atan2(r.x, r.z), -1.1, 1.1), a = THREE.MathUtils.clamp(Math.atan2(r.y, Math.hypot(r.x, r.z)), -0.5, 0.6);
+  const En = new THREE.Quaternion().setFromEuler(new THREE.Euler(-a * n, i * n, 0, 'YXZ'));
+  const Dn = new THREE.Quaternion().setFromAxisAngle(UP, yaw), On = Dn.clone().invert();
+  const o = Dn.multiply(En).multiply(On);
+  const s = e.getWorldQuaternion(new THREE.Quaternion()), c = e.parent.getWorldQuaternion(new THREE.Quaternion());
+  e.quaternion.copy(c.invert().multiply(o.multiply(s)));
+}
+
+window.__shot = async (s) => {
+  const w = s.w || 640, h = s.h || 640;
+  if (renderer.domElement.width !== w || renderer.domElement.height !== h) renderer.setSize(w, h, false);
+  model.parent.rotation.y = s.yaw || 0;
+  for (const n of ['head', 'neck']) if (bones[n]) bones[n].quaternion.copy(bones[n].userData.rest ||= bones[n].quaternion.clone());
+  pose(s.clip, s.t || 0);
+  if (s.aim) { const t = new THREE.Vector3(...s.aim); aimBone(bones.head, t, 0.6, s.yaw || 0); aimBone(bones.neck, t, 0.35, s.yaw || 0); model.updateMatrixWorld(true); }
+  const c = anchor(s.target || 'chest');
+  if (s.offset) c.add(v.fromArray(s.offset));
+  const d = new THREE.Vector3(...(s.dir || [0, 0, 1])).normalize();
+  cam = new THREE.PerspectiveCamera(s.fov || 28, w / h, 0.02, 50);
+  cam.position.copy(c).addScaledVector(d, s.dist || 2);
+  cam.lookAt(c);
+  const sd = new THREE.Vector3(...(s.sunDir || [0.55, 0.85, 0.65])).normalize();
+  sun.target.position.set(0, 0.3, 0);
+  sun.position.copy(sun.target.position).addScaledVector(sd, 5);
+  sun.target.updateMatrixWorld();
+  groundMesh.visible = s.ground !== false;
+  skel(s.skeleton);
+  debugLook(s.mode);
+  renderer.render(scene, cam);
+  return grab(w, h);
+};
+
+// shot.mode: 'unlit' (raw vertex colours, no lighting or tone mapping), 'normals', 'wire' (lit + wireframe overlay), 'clay' (lit, no colour)
+let lookMode = null;
+function debugLook(mode) {
+  if ((mode || null) === lookMode) return;
+  lookMode = mode || null;
+  model.traverse((o) => {
+    if (!o.isMesh || o.userData.blockout) return;
+    o.userData.lit ||= o.material;
+    const base = o.userData.lit, vc = !!o.geometry.attributes.color;
+    if (o.userData.wire) { o.remove(o.userData.wire); o.userData.wire = null; }
+    if (mode === 'unlit') o.material = new THREE.MeshBasicMaterial({ color: vc ? '#fff' : base.color, vertexColors: vc, toneMapped: false, side: base.side });
+    else if (mode === 'normals') o.material = new THREE.MeshNormalMaterial({ side: base.side });
+    else if (mode === 'clay') o.material = new THREE.MeshStandardMaterial({ color: '#b9b2a6', roughness: 0.6, side: base.side });
+    else o.material = base;
+    if (mode === 'wire') {
+      const w = new (o.isSkinnedMesh ? THREE.SkinnedMesh : THREE.Mesh)(o.geometry, new THREE.MeshBasicMaterial({ color: '#000', wireframe: true, transparent: true, opacity: 0.35, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
+      if (o.isSkinnedMesh) w.bind(o.skeleton, o.bindMatrix);
+      w.frustumCulled = false; w.userData.blockout = true; o.add(w); o.userData.wire = w;
+    }
+  });
+}
+
+// skinned bounds / exploded-vertex check for a clip at time t
+window.__bounds = (clip, t) => {
+  pose(clip, t);
+  const box = new THREE.Box3(), p = new THREE.Vector3();
+  let maxEdge = 0;
+  const per = {};
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const g = o.geometry, pos = g.attributes.position, b = new THREE.Box3();
+    const P = new Float32Array(pos.count * 3);
+    for (let i = 0; i < pos.count; i++) {
+      if (o.isSkinnedMesh) o.getVertexPosition(i, p); else p.fromBufferAttribute(pos, i);
+      p.applyMatrix4(o.matrixWorld);
+      P[i * 3] = p.x; P[i * 3 + 1] = p.y; P[i * 3 + 2] = p.z;
+      b.expandByPoint(p);
+    }
+    let me = 0;
+    if (g.index) {
+      const ix = g.index.array;
+      for (let i = 0; i < ix.length; i += 3) for (let k = 0; k < 3; k++) {
+        const a = ix[i + k] * 3, c = ix[i + (k + 1) % 3] * 3;
+        const e = Math.hypot(P[a] - P[c], P[a + 1] - P[c + 1], P[a + 2] - P[c + 2]);
+        if (e > me) me = e;
+      }
+    }
+    per[o.name] = { min: b.min.toArray().map((x) => +x.toFixed(3)), max: b.max.toArray().map((x) => +x.toFixed(3)), maxEdge: +me.toFixed(4) };
+    box.union(b); maxEdge = Math.max(maxEdge, me);
+  });
+  return { min: box.min.toArray().map((x) => +x.toFixed(3)), max: box.max.toArray().map((x) => +x.toFixed(3)), maxEdge: +maxEdge.toFixed(4), per };
+};
+
+// Block-out: rigid primitives parented to bones, to judge the rig's motion without any skinning.
+// spec: [{bone, shape:'capsule'|'sphere', a:[x,y,z], b:[x,y,z] (world-space bind positions), r, color, scale:[x,y,z]}]
+window.__blockout = (spec) => {
+  mixer.stopAllAction(); model.updateMatrixWorld(true);
+  for (const p of spec) {
+    const bone = bones[p.bone]; if (!bone) { console.error('no bone', p.bone); continue; }
+    const mat = new THREE.MeshStandardMaterial({ color: p.color || '#b9793f', roughness: 0.8 });
+    let m;
+    const a = new THREE.Vector3(...p.a), b = new THREE.Vector3(...(p.b || p.a));
+    if (p.shape === 'sphere' || a.distanceTo(b) < 1e-6) { m = new THREE.Mesh(new THREE.SphereGeometry(p.r, 24, 16), mat); m.position.copy(a); if (p.scale) m.scale.set(...p.scale); }
+    else { const len = a.distanceTo(b); m = new THREE.Mesh(new THREE.CapsuleGeometry(p.r, len, 8, 16), mat); m.position.copy(a).add(b).multiplyScalar(0.5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); if (p.r2) m.scale.set(1, 1, 1); }
+    m.userData.blockout = true; m.castShadow = true; m.receiveShadow = true;
+    scene.add(m); m.updateMatrixWorld(true);
+    bone.attach(m); // keeps world transform, now rides the bone
+  }
+};
+
+window.__bone = (name, clip, t) => { pose(clip, t); const b = bones[name]; return b ? b.getWorldPosition(new THREE.Vector3()).toArray() : null; };
+window.__eval = (src) => new Function('THREE', 'model', 'bones', 'scene', 'pose', 'clips', src)(THREE, model, bones, scene, pose, clips);
+window.__ready = true;
+</script>
+</body>
+</html>

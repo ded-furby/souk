@@ -1,0 +1,9 @@
+{
+  "name": "souk-monkey-tools",
+  "private": true,
+  "type": "module",
+  "description": "Offline tooling for the guide monkey (tools/monkey/polish.py). meshoptimizer does the mesh decimation.",
+  "devDependencies": {
+    "meshoptimizer": "1.3.0"
+  }
+}

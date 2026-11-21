@@ -14,9 +14,10 @@ const r = await p.evaluate(async () => {
     await window.__souk.advance(0.1, 30);
     await new Promise((r) => setTimeout(r, 0)); // let wall-clock timers (chapter start) run
     const ch = G.director.chapter, pos = m.root.position, d = pos.distanceTo(last);
+    const started = prevCh !== null; // the first chapter start places him at his mark; that is not a teleport
     if (ch !== prevCh) { if (seenFinale && ch === 'welcome') break; prevCh = ch; out.chapters[ch] = +(i / 10).toFixed(1); }
     if (ch === 'finale') seenFinale = true;
-    if (d > 0.6) out.jumps.push({ t: +(i / 10).toFixed(1), ch, d: +d.toFixed(2), riding: G.guide.riding, mount: !!m.mount });
+    if (d > 0.6 && started) out.jumps.push({ t: +(i / 10).toFixed(1), ch, d: +d.toFixed(2), riding: G.guide.riding, mount: !!m.mount });
     const k = G.guide.riding ? 'riding' : 'onFoot';
     out[k][ch] = (out[k][ch] || 0) + 1;
     last.copy(pos);

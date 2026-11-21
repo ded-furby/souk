@@ -1869,15 +1869,18 @@ var Ot = class e {
       d = new n(),
       f = new _(),
       p = new D(),
-      h = new D();
+      h = new D(),
+      k = 0;
     this.lanterns.forEach((e, t) => {
       f.setFromAxisAngle(new D(0, 1, 0), this.r() * Tt),
         d.compose(h.set(e.x, e.y, e.z), f, p.setScalar(e.s)),
         c.setMatrixAt(t, d),
-        l.setMatrixAt(t, d),
-        d.compose(h.set(e.x, e.y + 0.45 * e.s, e.z), f, p.set(1, e.chain, 1)),
-        u.setMatrixAt(t, d);
+        l.setMatrixAt(t, d);
+      // A chainless lantern must get no chain instance: a zero Y-scale makes the instanced normal 0/0 = NaN,
+      // and one NaN pixel through the bloom blacks out the whole frame.
+      e.chain > 0 && (d.compose(h.set(e.x, e.y + 0.45 * e.s, e.z), f, p.set(1, e.chain, 1)), u.setMatrixAt(k++, d));
     });
+    u.count = k;
     for (let e of [c, l, u])
       (e.castShadow = !1), (e.receiveShadow = !1), (e.userData.dynamic = !0), e.computeBoundingSphere(), t.add(e);
     c.castShadow = !0;
